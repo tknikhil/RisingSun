@@ -37,15 +37,11 @@ const LoginScreen = ({navigation}) => {
       // User found, navigate to the appropriate screen based on role
       if (user.role === 'admin') {
         // Display admin screen
-        console.log('Display admin screen');
-        print('Display admin screen');
        navigation.navigate('Admin');
         
       } else if (user.role === 'sales') {
         // Display sales screen
         navigation.navigate('Sales');
-        console.log('Display sales screen'); 
-        print('Display sales screen');
       }
     }
     else {
