@@ -24,9 +24,13 @@ const SalesScreen = () => {
  const handleSubmit =()=>{
   console.log('handleSubmit');
  }
+ const handleCustomer=()=>{
+  console.log('handleCustomer');
+ }
   return (
-    
+   
      <View style={styles.container}>
+      <View style={{backgroundColor:'#76a901',width:'95%',height:'30%',alignSelf:'center',borderRadius:5}}>
       <Text style={styles.header}>Customer</Text>
       <TouchableOpacity style={styles.dropdownSelector} onPress={()=>{setIsDropDownOpen(!isDropDownOpen)}}>
         <Text>{selectedCustomer}</Text>
@@ -46,8 +50,11 @@ const SalesScreen = () => {
           </TouchableOpacity>
         );
       }}/>
-      
+     
      </View>:null}
+   
+     </View>
+     
      <View style={styles.rowContainer}>
      
       <View style={styles.parallelContainer}>
@@ -79,7 +86,7 @@ const styles=StyleSheet.create({
     fontWeight:800,
     marginTop:10,
     marginLeft:10,
-    color:'green',
+    color:'#F2F4D1',
   },
 dropdownSelector:{
   width:'95%',
@@ -106,6 +113,11 @@ dropdownArea:{
   // borderColor:'#6699cc',
   backgroundColor:'#fff',
   elevation:5,
+  position: '',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
 },
 searchInput:{
   width:'100%',
@@ -130,7 +142,7 @@ rowContainer:{
   flexDirection: 'row',
    justifyContent: 'center',
   // alignItems: 'center',
-  marginTop:20,
+  top:-50
 },
 parallelContainer: {
   flex:1,
@@ -146,8 +158,9 @@ parallelContainer: {
 //   backgroundColor:'#000',
 //   justifyContent: 'space-between', 
 // },
-buttonAlign:{
-  alignSelf: 'flex-end',
-}
+// buttonAlign:{
+//   paddingLeft:30,
+//   alignSelf: 'flex-end',
+// }
 
 });

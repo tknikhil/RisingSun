@@ -22,12 +22,12 @@ const LoginScreen = ({navigation}) => {
     // Load user data from JSON file
     const userData = require('../../assets/json-request/login.json');
     setUsers(userData);
-    print(userData);
+    // print(userData);
     console.log(userData);
   }, []);
 
   const handleLogin = () => {
-    print("handleLogin");
+    // print("handleLogin");
     console.log("handleLogin");
     // Find the user by username and password
     const user = login.find(

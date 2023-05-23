@@ -11,11 +11,16 @@ const Button = ({ onPress,text }) => {
 
   const styles=StyleSheet.create({
     Button: {
-        left:'25%',
+      alignSelf: 'flex-end',
+      // marginLeft: 'auto',
         width:'25%',
+        height:40,
+        right:'10%',
+        marginBottom:'10%',
+        justifyContent:'center',
         backgroundColor: '#00a300', // Green logo color
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        // paddingVertical: 10,
+        // paddingHorizontal: 20,
         alignItems:'center',
         borderRadius: 5,
       },

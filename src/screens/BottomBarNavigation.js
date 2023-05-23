@@ -11,6 +11,7 @@ const BottomBarNavigation = () => {
     <Tab.Navigator
     screenOptions={{
       tabBarLabelStyle: { fontSize: 16 },
+      // headerShown:false
     }}
   >
       <Tab.Screen 
