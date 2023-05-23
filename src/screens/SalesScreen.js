@@ -3,6 +3,7 @@ import React,{useRef, useState} from 'react'
 import ddown from "../../assets/json-request/ddown.json"
 import Icon from 'react-native-vector-icons/dist/AntDesign';
 import { FlatList, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { Button } from '../app-widget';
 
 const SalesScreen = () => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
@@ -18,6 +19,10 @@ const SalesScreen = () => {
   }else{
     setData(ddown);
   }
+ }
+
+ const handleSubmit =()=>{
+  console.log('handleSubmit');
  }
   return (
     
@@ -41,11 +46,24 @@ const SalesScreen = () => {
           </TouchableOpacity>
         );
       }}/>
+      
      </View>:null}
-     <View style='styles.box'>
-      <Text>Hi</Text>
-     </View>
+     <View style={styles.rowContainer}>
+     
+      <View style={styles.parallelContainer}>
+        {/* First parallel container */}
+        {/* Place your content here */}
+      </View>
+      <View style={styles.parallelContainer}>
+        {/* Second parallel container */}
+        {/* Place your content here */}
+      </View>
+
     </View>
+    <Button onPress={handleSubmit} text={'Submit'} style={styles.buttonAlign} />
+    
+    </View>
+     
     
   )
 }
@@ -107,13 +125,29 @@ ddownItems:{
   borderBottomColor:'#8e8e8e',
   justifyContent:'center'
 },
-box:{
-  width:'100%',
-  height:'70%',
-  marginTop:30,
-  borderWidth:1,
-  backgroundColor:'#fff',
-  padding:5,
+rowContainer:{
+  flex: 1,
+  flexDirection: 'row',
+   justifyContent: 'center',
+  // alignItems: 'center',
+  marginTop:20,
+},
+parallelContainer: {
+  flex:1,
+    height: '95%',
+    backgroundColor: '#F2F4D1',
+    borderRadius:5,
+    marginBottom: 10,
+    marginHorizontal: 5,
+    elevation:5
+},
+// buttonViewAlign:{
+//   flex:1,
+//   backgroundColor:'#000',
+//   justifyContent: 'space-between', 
+// },
+buttonAlign:{
+  alignSelf: 'flex-end',
 }
 
 });

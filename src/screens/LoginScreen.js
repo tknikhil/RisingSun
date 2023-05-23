@@ -2,6 +2,7 @@ import React, { useState ,useEffect} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {Input,Button} from '../app-widget';
 // import data from './../../assets/json-request/login.json'
+// import BottomBarNavigation from '../app-widget/BottomBarNavigation';
 
 
 const LoginScreen = ({navigation}) => {
@@ -41,7 +42,7 @@ const LoginScreen = ({navigation}) => {
         
       } else if (user.role === 'sales') {
         // Display sales screen
-        navigation.navigate('Sales');
+        navigation.navigate('BottomNavBar');
       }
     }
     else {
@@ -71,7 +72,7 @@ const LoginScreen = ({navigation}) => {
           value={password}
         />
       </View>
-      <Button onPress={handleLogin} />
+      <Button onPress={handleLogin} text={'Login'}/>
     </View>
   );
 };
