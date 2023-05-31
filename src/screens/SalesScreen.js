@@ -48,10 +48,14 @@ const SalesScreen = () => {
       </TouchableOpacity>
       </View>
       <View style={styles.columnContainer}>
+      <View style={styles.columnBtnContainer}>
       <Button onPress={handleNewCustomer} text={'New'} style={styles.newbutton} />
     </View>
+    </View>
     <View style={styles.columnContainer}>
+    <View style={styles.columnBtnContainer}>
     <Button onPress={handleEditCustomer} text={'Edit'} style={styles.editbutton} />
+   </View>
     </View>
     </View>
      {isDropDownOpen? <View style={styles.dropdownArea}>
@@ -82,7 +86,7 @@ const SalesScreen = () => {
         <Text style={styles.productTitle}>Product 1</Text>
         <TextInput
           style={styles.quantityInput}
-          placeholder="Enter quantity"
+          placeholder="Qty"
           value={product1Quantity}
           onChangeText={text => setProduct1Quantity(text)}
           keyboardType="numeric"
@@ -95,7 +99,7 @@ const SalesScreen = () => {
         <Text style={styles.productTitle}>Product 2</Text>
         <TextInput
           style={styles.quantityInput}
-          placeholder="Enter quantity"
+          placeholder="Qty"
           value={product2Quantity}
           onChangeText={text => setProduct2Quantity(text)}
           keyboardType="numeric"
@@ -108,7 +112,7 @@ const SalesScreen = () => {
         <Text style={styles.productTitle}>Product 3</Text>
         <TextInput
           style={styles.quantityInput}
-          placeholder="Enter quantity"
+          placeholder="Qty"
           value={product3Quantity}
           onChangeText={text => setProduct3Quantity(text)}
           keyboardType="numeric"
@@ -122,8 +126,9 @@ const SalesScreen = () => {
       </View>
 
     </View>
-    <Button onPress={handleSubmit} text={'Submit'} style={styles.buttonAlign} />
-    
+    <View style={styles.submitBtnContainer}>
+    <Button onPress={handleSubmit} text={'Submit'} style={styles.newbutton} />
+    </View>
     </View>
      
     
@@ -137,7 +142,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#eeeeee',
   },
   header: {
     fontSize: 19,
@@ -149,12 +154,14 @@ const styles = StyleSheet.create({
   rowDropdownContainer:{
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: windowHeight * 0.002,
     width: windowWidth * 0.95,
+    // backgroundColor:'red'
   },
   columnDropdownContainer:{
-    flex:1
+    // flex:1,
+    alignSelf: 'flex-start',
+    // backgroundColor:'white'
   },
   Text:{
     color:'#8E8EAD',
@@ -165,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: windowWidth * 0.01,
     borderWidth: 1,
     borderColor: '#8E8EAD',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#fff',
     marginTop: windowHeight * 0.002,
     marginLeft: windowWidth * 0.02,
     flexDirection: 'row',
@@ -180,6 +187,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.2,
     alignSelf: 'center',
     borderRadius: windowWidth * 0.01,
+    zIndex:2
   },
   
   dropdownArea: {
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: windowWidth * 0.01,
     borderBottomRightRadius: windowWidth * 0.01,
     marginLeft: windowWidth * 0.02,
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#fff',
     elevation: 5,
     position: 'absolute',
     top:windowHeight * 0.100, 
@@ -198,11 +206,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     width: '100%',
-    height: windowHeight * 0.04,
+    height: windowHeight/3-windowHeight,
+    fontSize:12,
     borderBottomLeftRadius: windowWidth * 0.01,
     borderBottomRightRadius: windowWidth * 0.01,
     borderEndWidth: 1,
-    alignSelf: 'center',
+    alignSelf: 'auto',
     elevation: 2,
   },
   ddownItems: {
@@ -215,9 +224,12 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flex: 1,
+    width: windowWidth * 0.97,
     flexDirection: 'row',
+    alignSelf:'center',
     justifyContent: 'center',
     top: windowHeight * -0.06,
+    zIndex:1
   },
   parallelContainer: {
     flex: 1,
@@ -238,9 +250,18 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
     // elevation: 10,
   },
-  newbutton:{
-    width: windowWidth * 0.60,
+  submitBtnContainer:{
+    marginBottom:10,
+    marginLeft:windowWidth/1.5,
+    width:windowWidth/3,
+    // backgroundColor:'blue'
   },
+  columnBtnContainer:{
+    width:windowWidth*.15,
+    height:windowHeight/1-windowHeight,
+    marginLeft:10,
+  },
+ 
   productContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -249,19 +270,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   productTitle: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
     marginRight: 10,
     color:'#84889a'
   },
   quantityInput: {
     flex: 1,
+    textAlign:'center',
     borderWidth: 1,
     borderColor: '#8E8EAD',
     borderRadius: 5,
     padding: 5,
     marginBottom: 10,
     color:'#89CFF0',
-  height:windowHeight*0.04
+  height:windowHeight*0.04,
+  
   },
 });
+   

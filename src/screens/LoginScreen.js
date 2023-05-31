@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState ,useEffect,Dimensions} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {Input,Button} from '../app-widget';
 // import data from './../../assets/json-request/login.json'
@@ -72,11 +72,14 @@ const LoginScreen = ({navigation}) => {
           value={password}
         />
       </View>
-      <Button onPress={handleLogin} text={'Login'}/>
+      <View style={styles.btnContainer}>
+      <Button  onPress={handleLogin} text={'Login'}/>
+      </View>
     </View>
   );
 };
-
+// const windowWidth = Dimensions.get('window').width;
+// const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -103,6 +106,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '80%',
   },
+  btnContainer:{
+    width:60,
+    height:40,
+    
+  }
 });
 
 export default LoginScreen;
+// const windowWidth = Dimensions.get('window').width;
+// const windowHeight = Dimensions.get('window').height;
