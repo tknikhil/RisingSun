@@ -18,7 +18,7 @@ const Button = ({ onPress,text }) => {
         right:'10%',
         marginBottom:'10%',
         justifyContent:'center',
-        backgroundColor: '#00a300', // Green logo color
+        backgroundColor: '#008000', // Green logo color
         // paddingVertical: 10,
         // paddingHorizontal: 20,
         alignItems:'center',

@@ -10,6 +10,11 @@ const SalesScreen = () => {
  const [isDropDownOpen,setIsDropDownOpen]=useState(false);
  const [data,setData]=useState(ddown);
  const searchRef=useRef();
+
+ const [product1Quantity, setProduct1Quantity] = useState('');
+ const [product2Quantity, setProduct2Quantity] = useState('');
+ const [product3Quantity, setProduct3Quantity] = useState('');
+
  const onSearch=(txt)=>{
   if(txt !==''){
     let tempData = data.filter(item=>{
@@ -38,7 +43,7 @@ const SalesScreen = () => {
       <View style={styles.rowDropdownContainer}>
     <View style={styles.columnDropdownContainer}>
       <TouchableOpacity style={styles.dropdownSelector} onPress={()=>{setIsDropDownOpen(!isDropDownOpen)}}>
-        <Text>{selectedCustomer}</Text>
+        <Text style={styles.Text}>{selectedCustomer}</Text>
         {isDropDownOpen?<Icon name="up" size={20}/>:<Icon name="down" size={20}/>}
       </TouchableOpacity>
       </View>
@@ -73,6 +78,43 @@ const SalesScreen = () => {
       <View style={styles.parallelContainer}>
         {/* First parallel container */}
         {/* Place your content here */}
+        <View style={styles.productContainer}>
+        <Text style={styles.productTitle}>Product 1</Text>
+        <TextInput
+          style={styles.quantityInput}
+          placeholder="Enter quantity"
+          value={product1Quantity}
+          onChangeText={text => setProduct1Quantity(text)}
+          keyboardType="numeric"
+          placeholderTextColor={'#84889a'}
+        />
+      </View>
+
+      {/* Second parallel container */}
+      <View style={styles.productContainer}>
+        <Text style={styles.productTitle}>Product 2</Text>
+        <TextInput
+          style={styles.quantityInput}
+          placeholder="Enter quantity"
+          value={product2Quantity}
+          onChangeText={text => setProduct2Quantity(text)}
+          keyboardType="numeric"
+          placeholderTextColor={'#84889a'}
+        />
+      </View>
+
+      {/* Third parallel container */}
+      <View style={styles.productContainer}>
+        <Text style={styles.productTitle}>Product 3</Text>
+        <TextInput
+          style={styles.quantityInput}
+          placeholder="Enter quantity"
+          value={product3Quantity}
+          onChangeText={text => setProduct3Quantity(text)}
+          keyboardType="numeric"
+          placeholderTextColor={'#84889a'}
+        />
+      </View>
       </View>
       <View style={styles.parallelContainer}>
         {/* Second parallel container */}
@@ -95,14 +137,14 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fde9',
+    backgroundColor: '#fff',
   },
   header: {
     fontSize: 19,
     fontWeight: '800',
     marginTop: windowHeight * 0.02,
     marginLeft: windowWidth * 0.02,
-    color: '#F2F4D1',
+    color: '#9E9EFF',
   },
   rowDropdownContainer:{
     flex: 1,
@@ -114,13 +156,16 @@ const styles = StyleSheet.create({
   columnDropdownContainer:{
     flex:1
   },
+  Text:{
+    color:'#8E8EAD',
+  },
   dropdownSelector: {
     width: windowWidth * 0.60,
     height: windowHeight * 0.04,
     borderRadius: windowWidth * 0.01,
     borderWidth: 1,
-    borderColor: '#6699cc',
-    backgroundColor: '#fff',
+    borderColor: '#8E8EAD',
+    backgroundColor: '#eeeeee',
     marginTop: windowHeight * 0.002,
     marginLeft: windowWidth * 0.02,
     flexDirection: 'row',
@@ -130,7 +175,7 @@ const styles = StyleSheet.create({
     paddingRight: windowWidth * 0.03,
   },
   dropdownContainer: {
-    backgroundColor: '#76a901',
+    // backgroundColor: '#76a901',
     width: windowWidth * 0.95,
     height: windowHeight * 0.2,
     alignSelf: 'center',
@@ -143,7 +188,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: windowWidth * 0.01,
     borderBottomRightRadius: windowWidth * 0.01,
     marginLeft: windowWidth * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: '#eeeeee',
     elevation: 5,
     position: 'absolute',
     top:windowHeight * 0.100, 
@@ -177,13 +222,46 @@ const styles = StyleSheet.create({
   parallelContainer: {
     flex: 1,
     height: windowHeight * 0.60,
-    backgroundColor: '#F2F4D1',
-    borderRadius: windowWidth * 0.01,
+    borderColor:'#8E8EAD',
+    borderWidth:1,
+    backgroundColor: '#fff',
+    borderRadius: windowWidth * 0.02,
     marginBottom: windowHeight * 0.01,
     marginHorizontal: windowWidth * 0.01,
-    elevation: 5,
+    // elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6.27,
+    // elevation: 10,
   },
   newbutton:{
     width: windowWidth * 0.60,
-  }
+  },
+  productContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  productTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 10,
+    color:'#84889a'
+  },
+  quantityInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#8E8EAD',
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 10,
+    color:'#89CFF0',
+  height:windowHeight*0.04
+  },
 });
