@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/dist/AntDesign';
 import { FlatList, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { Button } from '../app-widget';
 
-const SalesScreen = () => {
+const SalesScreen = ({navigation}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
  const [isDropDownOpen,setIsDropDownOpen]=useState(false);
  const [data,setData]=useState(ddown);
@@ -30,7 +30,7 @@ const SalesScreen = () => {
   console.log('handleSubmit');
  }
  const handleNewCustomer=()=>{
-  console.log('handleCustomer');
+  navigation.navigate('Form');
  }
  const handleEditCustomer=()=>{
   console.log('handleCustomer');
