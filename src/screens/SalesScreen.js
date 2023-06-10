@@ -1,12 +1,14 @@
-import { View, Text, StyleSheet ,Dimensions} from 'react-native'
+import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity} from 'react-native'
 import React,{useRef, useState} from 'react'
 import ddown from "../../assets/json-request/ddown.json"
-import Icon from 'react-native-vector-icons/dist/AntDesign';
-import { FlatList, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
-import { Button } from '../app-widget';
+import Icon from 'react-native-vector-icons/dist/AntDesign'
+import { FlatList, TextInput } from 'react-native-gesture-handler'
+import { Button } from '../app-widget'
+import Form from './component/Form'
 
 const SalesScreen = ({navigation}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
+ const [products, setProducts] = useState([]);
  const [isDropDownOpen,setIsDropDownOpen]=useState(false);
  const [data,setData]=useState(ddown);
  const searchRef=useRef();
@@ -14,6 +16,17 @@ const SalesScreen = ({navigation}) => {
  const [product1Quantity, setProduct1Quantity] = useState('');
  const [product2Quantity, setProduct2Quantity] = useState('');
  const [product3Quantity, setProduct3Quantity] = useState('');
+
+ const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    console.log('closePopup');
+    setIsPopupVisible(false);
+  };
 
  const onSearch=(txt)=>{
   if(txt !==''){
@@ -25,13 +38,29 @@ const SalesScreen = ({navigation}) => {
     setData(ddown);
   }
  }
+ const updateProducts = (productIndex, quantity) => {
+  const updatedProducts = [...products];
 
+  if (updatedProducts.length < productIndex) {
+    // Initialize the products array with empty objects until the desired index
+    for (let i = updatedProducts.length; i < productIndex; i++) {
+      updatedProducts.push({});
+    }
+  }
+
+  updatedProducts[productIndex - 1] = {
+    name: `Product ${productIndex}`,
+    quantity: quantity
+  };
+  
+  setProducts(updatedProducts);
+};
  const handleSubmit =()=>{
   console.log('handleSubmit');
  }
- const handleNewCustomer=()=>{
-  navigation.navigate('Form');
- }
+//  const handleNewCustomer=()=>{
+//   navigation.navigate('Form');
+//  }
  const handleEditCustomer=()=>{
   console.log('handleCustomer');
  }
@@ -49,12 +78,38 @@ const SalesScreen = ({navigation}) => {
       </View>
       <View style={styles.columnContainer}>
       <View style={styles.columnBtnContainer}>
-      <Button onPress={handleNewCustomer} text={'New'} style={styles.newbutton} />
+      <Button onPress={openPopup} text={'New'} style={styles.newbutton} />
+      <Modal visible={isPopupVisible} animationType="slide" transparent={true}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
+              <Icon name="close" size={20} color="red" />
+            </TouchableOpacity>
+          <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%',height:'40%' }}>
+          
+          <Form/>
+          
+          </View>
+          
+        </View>
+      </Modal>
     </View>
     </View>
     <View style={styles.columnContainer}>
     <View style={styles.columnBtnContainer}>
-    <Button onPress={handleEditCustomer} text={'Edit'} style={styles.editbutton} />
+    <Button onPress={openPopup} text={'Edit'} style={styles.editbutton} />
+    <Modal visible={isPopupVisible} animationType="slide" transparent={true}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
+              <Icon name="close" size={20} color="red" />
+            </TouchableOpacity>
+          <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%',height:'40%' }}>
+          
+          <Form/>
+          
+          </View>
+          
+        </View>
+      </Modal>
    </View>
     </View>
     </View>
@@ -88,7 +143,10 @@ const SalesScreen = ({navigation}) => {
           style={styles.quantityInput}
           placeholder="Qty"
           value={product1Quantity}
-          onChangeText={text => setProduct1Quantity(text)}
+          onChangeText={text =>{
+            setProduct1Quantity(text),
+            updateProducts(1, text)
+          }}
           keyboardType="numeric"
           placeholderTextColor={'#84889a'}
         />
@@ -101,7 +159,10 @@ const SalesScreen = ({navigation}) => {
           style={styles.quantityInput}
           placeholder="Qty"
           value={product2Quantity}
-          onChangeText={text => setProduct2Quantity(text)}
+          onChangeText={text => [
+            setProduct2Quantity(text),
+            updateProducts(2, text)
+          ]}
           keyboardType="numeric"
           placeholderTextColor={'#84889a'}
         />
@@ -114,7 +175,10 @@ const SalesScreen = ({navigation}) => {
           style={styles.quantityInput}
           placeholder="Qty"
           value={product3Quantity}
-          onChangeText={text => setProduct3Quantity(text)}
+          onChangeText={text => [
+            setProduct3Quantity(text),
+            updateProducts(3, text)
+          ]}
           keyboardType="numeric"
           placeholderTextColor={'#84889a'}
         />
@@ -122,7 +186,12 @@ const SalesScreen = ({navigation}) => {
       </View>
       <View style={styles.parallelContainer}>
         {/* Second parallel container */}
-        {/* Place your content here */}
+        {products.map((product, index) => (
+    <View key={index} style={styles.productContainer}>
+      <Text style={styles.productTitle}>{product.name|| ''}</Text>
+      <Text>{product.quantity|| ''}</Text>
+    </View>
+  ))}
       </View>
 
     </View>

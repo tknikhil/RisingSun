@@ -17,6 +17,7 @@ const Input = ({ placeholder, secureTextEntry, onChangeText, value }) => {
    
       input: {
         height: 40,
+        width:'100%',
         backgroundColor:'#FFFFFF',
         borderColor: '#0000FF', // Blue input border color
         borderWidth: 1,

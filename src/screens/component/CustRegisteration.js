@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View,StyleSheet,Dimensions} from 'react-native'
 import React from 'react'
 import { Input } from '../../app-widget'
 
@@ -8,7 +8,8 @@ const CustRegisteration = (formData,setFormData) => {
     // custAliasName:"",
     // custType:"",
   return (
-    <View>
+    <View style={styles.formContainer}>
+      
       <Input placeholder="Customer Code"  secureTextEntry={false}
           onChangeText={(custCode) => setFormData(... formData, custCode)}
           value={formData.custCode}/>
@@ -24,4 +25,15 @@ const CustRegisteration = (formData,setFormData) => {
   )
 }
 
+
 export default CustRegisteration
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const styles=StyleSheet.create({
+  formContainer:{
+    margin:'10%',
+    width:windowWidth*.7,
+    height:'65%',
+  }
+});
