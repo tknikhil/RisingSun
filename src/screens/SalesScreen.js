@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity, LogBox} from 'react-native'
 import React,{useRef, useState} from 'react'
 import ddown from "../../assets/json-request/ddown.json"
 import Icon from 'react-native-vector-icons/dist/AntDesign'
 import { FlatList, TextInput } from 'react-native-gesture-handler'
 import { Button } from '../app-widget'
 import Form from './component/Form'
-import { useNavigation } from '@react-navigation/native';
+import { TabActions, useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SalesScreen = ({}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
@@ -153,51 +154,100 @@ const SalesScreen = ({}) => {
         {/* First parallel container */}
         {/* Place your content here */}
         <View style={styles.productContainer}>
-        <Text style={styles.productTitle}>Product 1</Text>
-        <TextInput
-          style={styles.quantityInput}
-          placeholder="Qty"
-          value={product1Quantity}
-          onChangeText={text =>{
-            setProduct1Quantity(text),
-            updateProducts(1, text)
-          }}
-          keyboardType="numeric"
-          placeholderTextColor={'#84889a'}
-        />
-      </View>
+      <LinearGradient
+  colors={['#F0F2E4', '#D2DAC2']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productContainer}
+>
 
-      {/* Second parallel container */}
-      <View style={styles.productContainer}>
-        <Text style={styles.productTitle}>Product 2</Text>
-        <TextInput
-          style={styles.quantityInput}
-          placeholder="Qty"
-          value={product2Quantity}
-          onChangeText={text => [
-            setProduct2Quantity(text),
-            updateProducts(2, text)
-          ]}
-          keyboardType="numeric"
-          placeholderTextColor={'#84889a'}
-        />
-      </View>
+  <View style={styles.productBox}>
+  <LinearGradient
+  colors={['#2EAAFA', '#1F2F98']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productBox}>
+    <Text style={styles.productTitle}>Product 1</Text>
+    </LinearGradient>
+  </View>
+ 
+  <TextInput
+    style={styles.quantityInput}
+    placeholder="Qty"
+    value={product1Quantity}
+    onChangeText={text => [
+      setProduct1Quantity(text),
+      updateProducts(1, text)
+    ]}
+    keyboardType="numeric"
+    placeholderTextColor="#84889a"
+  />
+</LinearGradient>
+</View>
 
+<View style={styles.productContainer}>
+     
+<LinearGradient
+  colors={['#F0F2E4', '#D2DAC2']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productContainer}
+>
+  <View style={styles.productBox}>
+  <LinearGradient
+  colors={['#2EAAFA', '#1F2F98']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productBox}>
+    <Text style={styles.productTitle}>Product 2</Text>
+    </LinearGradient>
+  </View>
+ 
+  <TextInput
+    style={styles.quantityInput}
+    placeholder="Qty"
+    value={product2Quantity}
+    onChangeText={text => [
+      setProduct2Quantity(text),
+      updateProducts(2, text)
+    ]}
+    keyboardType="numeric"
+    placeholderTextColor="#84889a"
+  />
+</LinearGradient>
+</View>
       {/* Third parallel container */}
       <View style={styles.productContainer}>
-        <Text style={styles.productTitle}>Product 3</Text>
-        <TextInput
-          style={styles.quantityInput}
-          placeholder="Qty"
-          value={product3Quantity}
-          onChangeText={text => [
-            setProduct3Quantity(text),
-            updateProducts(3, text)
-          ]}
-          keyboardType="numeric"
-          placeholderTextColor={'#84889a'}
-        />
-      </View>
+      <LinearGradient
+  colors={['#F0F2E4', '#D2DAC2']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productContainer}
+>
+
+  <View style={styles.productBox}>
+  <LinearGradient
+  colors={['#2EAAFA', '#1F2F98']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+  style={styles.productBox}>
+    <Text style={styles.productTitle}>Product 3</Text>
+    </LinearGradient>
+  </View>
+ 
+  <TextInput
+    style={styles.quantityInput}
+    placeholder="Qty"
+    value={product3Quantity}
+    onChangeText={text => [
+      setProduct3Quantity(text),
+      updateProducts(3, text)
+    ]}
+    keyboardType="numeric"
+    placeholderTextColor="#84889a"
+  />
+</LinearGradient>
+</View>
       </View>
       <View style={styles.parallelContainer}>
         {/* Second parallel container */}
@@ -214,7 +264,10 @@ const SalesScreen = ({}) => {
     <Button onPress={handleSubmit} text={'Submit'} style={styles.newbutton} />
     </View>
     </View>
-     
+
+    
+    
+    
     
   )
 }
@@ -224,9 +277,52 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  productBoxContainer: {
+    elevation: 2, // Apply elevation to this wrapping View
+    // marginRight: 10,
+    // flexDirection:'column',
+    width:'100%',
+    borderRadius: 5,
+  },
+  productContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    // justifyContent:'space-between',
+    overflow: 'hidden',
+    marginTop:5,
+    width:'100%',
+    // marginLeft: -20,
+  },
+  productBox: {
+    width: '80%',
+    height: 90,
+    justifyContent: 'center',
+    // alignItems: 'center',
+    // marginRight: 10,
+    borderRadius: 5,
+    // marginLeft: -20,
+   
+  },
+  productTitle: {
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+  },
+  quantityInput: {
+    backgroundColor:'#fff',
+    fontSize: 14,
+    borderWidth: 1,
+    borderColor: '#84889a',
+    padding: 5,
+    width: '25%',
+    borderRadius: 5,
+    marginTop:'20%',
+    marginLeft:'-7%'
+  },
   container: {
     flex: 1,
-    backgroundColor: '#eeeeee',
+    // backgroundColor: '#eeeeee',
   },
   header: {
     fontSize: 19,
@@ -324,6 +420,9 @@ const styles = StyleSheet.create({
     borderRadius: windowWidth * 0.02,
     marginBottom: windowHeight * 0.01,
     marginHorizontal: windowWidth * 0.01,
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 10,
     // elevation: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -346,30 +445,30 @@ const styles = StyleSheet.create({
     marginLeft:10,
   },
  
-  productContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 10,
-    paddingHorizontal: 20,
-  },
-  productTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginRight: 10,
-    color:'#84889a'
-  },
-  quantityInput: {
-    flex: 1,
-    textAlign:'center',
-    borderWidth: 1,
-    borderColor: '#8E8EAD',
-    borderRadius: 5,
-    padding: 5,
-    marginBottom: 10,
-    color:'#89CFF0',
-  height:windowHeight*0.04,
+  // productContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  //   marginVertical: 10,
+  //   paddingHorizontal: 20,
+  // },
+  // productTitle: {
+  //   fontSize: 12,
+  //   fontWeight: 'bold',
+  //   marginRight: 10,
+  //   color:'#84889a'
+  // },
+  // quantityInput: {
+  //   flex: 1,
+  //   textAlign:'center',
+  //   borderWidth: 1,
+  //   borderColor: '#8E8EAD',
+  //   borderRadius: 5,
+  //   padding: 5,
+  //   marginBottom: 10,
+  //   color:'#89CFF0',
+  // height:windowHeight*0.04,
   
-  },
+  // },
 });
    
