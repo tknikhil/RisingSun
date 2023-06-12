@@ -5,19 +5,22 @@ import Icon from 'react-native-vector-icons/dist/AntDesign'
 import { FlatList, TextInput } from 'react-native-gesture-handler'
 import { Button } from '../app-widget'
 import Form from './component/Form'
+import { useNavigation } from '@react-navigation/native';
 
-const SalesScreen = ({navigation}) => {
+const SalesScreen = ({}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
  const [products, setProducts] = useState([]);
  const [isDropDownOpen,setIsDropDownOpen]=useState(false);
  const [data,setData]=useState(ddown);
  const searchRef=useRef();
+ const navigation = useNavigation();
 
  const [product1Quantity, setProduct1Quantity] = useState('');
  const [product2Quantity, setProduct2Quantity] = useState('');
  const [product3Quantity, setProduct3Quantity] = useState('');
 
  const [isPopupVisible, setIsPopupVisible] = useState(false);
+ const [isCustomerSelected, setIsCustomerSelected] = useState(false);
 
   const openPopup = () => {
     setIsPopupVisible(true);
@@ -37,6 +40,7 @@ const SalesScreen = ({navigation}) => {
   }else{
     setData(ddown);
   }
+  setIsCustomerSelected(false)
  }
  const updateProducts = (productIndex, quantity) => {
   const updatedProducts = [...products];
@@ -56,7 +60,10 @@ const SalesScreen = ({navigation}) => {
   setProducts(updatedProducts);
 };
  const handleSubmit =()=>{
-  console.log('handleSubmit');
+  navigation.navigate('Billing', {
+    customer: selectedCustomer,
+    products: products,
+  });
  }
 //  const handleNewCustomer=()=>{
 //   navigation.navigate('Form');
@@ -76,6 +83,8 @@ const SalesScreen = ({navigation}) => {
         {isDropDownOpen?<Icon name="up" size={20}/>:<Icon name="down" size={20}/>}
       </TouchableOpacity>
       </View>
+
+      
       <View style={styles.columnContainer}>
       <View style={styles.columnBtnContainer}>
       <Button onPress={openPopup} text={'New'} style={styles.newbutton} />
@@ -94,6 +103,8 @@ const SalesScreen = ({navigation}) => {
       </Modal>
     </View>
     </View>
+
+    {isCustomerSelected &&(
     <View style={styles.columnContainer}>
     <View style={styles.columnBtnContainer}>
     <Button onPress={openPopup} text={'Edit'} style={styles.editbutton} />
@@ -112,6 +123,8 @@ const SalesScreen = ({navigation}) => {
       </Modal>
    </View>
     </View>
+    )}
+
     </View>
      {isDropDownOpen? <View style={styles.dropdownArea}>
       <TextInput ref={searchRef} placeholder='Search' style={styles.searchInput} onChangeText={(txt)=>{onSearch(txt);}}/>
@@ -121,9 +134,11 @@ const SalesScreen = ({navigation}) => {
             setSelectedCustomer(item.name);
             onSearch('');
             setIsDropDownOpen(false);
+            setIsCustomerSelected(true);
             searchRef.current.clear();
           }}>
             <Text>{item.name}</Text>
+            
           </TouchableOpacity>
         );
       }}/>
