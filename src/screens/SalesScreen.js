@@ -93,13 +93,13 @@ const SalesScreen = ({}) => {
       <View style={styles.columnBtnContainer}>
       <Button onPress={openPopup} text={'New'} style={styles.newbutton} />
       <Modal visible={isPopupVisible} animationType="slide" transparent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
           <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
               <Icon name="close" size={20} color="red" />
             </TouchableOpacity>
-          <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%',height:'40%' }}>
+          <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%', maxHeight: '50%', }}>
           
-          <Form/>
+          <Form style={{height:'50%',width:'80%'}}/>
           
           </View>
           
@@ -185,7 +185,7 @@ const SalesScreen = ({}) => {
       updateProducts(1, text,product1Price)
     ]}
     keyboardType="numeric"
-    placeholderTextColor="#84889a"
+    // placeholderTextColor="#84889a"
   />
 </LinearGradient>
 </View>
@@ -218,7 +218,7 @@ const SalesScreen = ({}) => {
       updateProducts(2, text,product1Price)
     ]}
     keyboardType="numeric"
-    placeholderTextColor="#84889a"
+    // placeholderTextColor="#84889a"
   />
 </LinearGradient>
 </View>
@@ -251,7 +251,7 @@ const SalesScreen = ({}) => {
       updateProducts(3, text,product1Price)
     ]}
     keyboardType="numeric"
-    placeholderTextColor="#84889a"
+    // placeholderTextColor="#84889a"
   />
 </LinearGradient>
 </View>
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     borderColor: '#84889a',
     padding: 5,
     width: '25%',
-    placeholderTextColor:'grey',
+    // placeholderTextColor:'grey',
     borderRadius: 5,
     // marginTop:'20%',
     color:'black',
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'white'
   },
   Text:{
-    color:'#8E8EAD',
+    color:'blue',
   },
   dropdownSelector: {
     width: windowWidth * 0.60,
@@ -479,7 +479,8 @@ const styles = StyleSheet.create({
     borderEndWidth: 1,
     alignSelf: 'auto',
     elevation: 2,
-    color:'grey',
+    color:'blue',
+    // placeholderTextColor:'blue'
   },
   ddownItems: {
     width: windowWidth * 0.95,
