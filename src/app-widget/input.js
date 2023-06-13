@@ -24,7 +24,7 @@ const Input = ({ placeholder, secureTextEntry, onChangeText, value }) => {
         marginBottom: 10,
         paddingHorizontal: 10,
         borderRadius:5,
-        color:'#0000FF'
+        color:'#0000FF',
       },
   });
 

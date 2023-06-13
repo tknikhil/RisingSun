@@ -58,7 +58,7 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.blueText}>Risingsun</Text> <Text style={styles.greenText}>Agencies</Text>
         </Text>
       </View>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer,{ placeholderTextColor:'grey',}]}>
       <Input
           placeholder="Email"
           secureTextEntry={false}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
  
   inputContainer: {
     marginBottom: 20,
-    width: '80%',
+    width: '80%'
   },
   btnContainer:{
     width:60,

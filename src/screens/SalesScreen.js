@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity, LogBox} from 'react-native'
+import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity, ScrollView} from 'react-native'
 import React,{useRef, useState} from 'react'
 import ddown from "../../assets/json-request/ddown.json"
 import Icon from 'react-native-vector-icons/dist/AntDesign'
@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const SalesScreen = ({}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
  const [products, setProducts] = useState([]);
+ const [product1Price, setProduct1Price] = useState('199.99');
  const [isDropDownOpen,setIsDropDownOpen]=useState(false);
  const [data,setData]=useState(ddown);
  const searchRef=useRef();
@@ -43,7 +44,7 @@ const SalesScreen = ({}) => {
   }
   setIsCustomerSelected(false)
  }
- const updateProducts = (productIndex, quantity) => {
+ const updateProducts = (productIndex, quantity,price) => {
   const updatedProducts = [...products];
 
   if (updatedProducts.length < productIndex) {
@@ -55,7 +56,9 @@ const SalesScreen = ({}) => {
 
   updatedProducts[productIndex - 1] = {
     name: `Product ${productIndex}`,
-    quantity: quantity
+    quantity: quantity,
+    price: price,
+    amount: quantity * price 
   };
   
   setProducts(updatedProducts);
@@ -168,6 +171,7 @@ const SalesScreen = ({}) => {
   end={{ x: 1, y: 1 }}
   style={styles.productBox}>
     <Text style={styles.productTitle}>Product 1</Text>
+    <Text style={styles.price}>₹{product1Price}</Text> 
     </LinearGradient>
   </View>
  
@@ -176,8 +180,9 @@ const SalesScreen = ({}) => {
     placeholder="Qty"
     value={product1Quantity}
     onChangeText={text => [
+      console.log('onChangeText=========>',product1Price),
       setProduct1Quantity(text),
-      updateProducts(1, text)
+      updateProducts(1, text,product1Price)
     ]}
     keyboardType="numeric"
     placeholderTextColor="#84889a"
@@ -200,6 +205,7 @@ const SalesScreen = ({}) => {
   end={{ x: 1, y: 1 }}
   style={styles.productBox}>
     <Text style={styles.productTitle}>Product 2</Text>
+    <Text style={styles.price}>₹{product1Price}</Text> 
     </LinearGradient>
   </View>
  
@@ -209,7 +215,7 @@ const SalesScreen = ({}) => {
     value={product2Quantity}
     onChangeText={text => [
       setProduct2Quantity(text),
-      updateProducts(2, text)
+      updateProducts(2, text,product1Price)
     ]}
     keyboardType="numeric"
     placeholderTextColor="#84889a"
@@ -232,6 +238,7 @@ const SalesScreen = ({}) => {
   end={{ x: 1, y: 1 }}
   style={styles.productBox}>
     <Text style={styles.productTitle}>Product 3</Text>
+    <Text style={styles.price}>₹{product1Price}</Text> 
     </LinearGradient>
   </View>
  
@@ -241,7 +248,7 @@ const SalesScreen = ({}) => {
     value={product3Quantity}
     onChangeText={text => [
       setProduct3Quantity(text),
-      updateProducts(3, text)
+      updateProducts(3, text,product1Price)
     ]}
     keyboardType="numeric"
     placeholderTextColor="#84889a"
@@ -251,12 +258,34 @@ const SalesScreen = ({}) => {
       </View>
       <View style={styles.parallelContainer}>
         {/* Second parallel container */}
-        {products.map((product, index) => (
+        <ScrollView horizontal>
+    <View style={styles.table}>
+      {/* Table column headers */}
+      <View style={styles.columnHeaderContainer}>
+        <Text style={[styles.columnHeader,{width:63}]}>Product</Text>
+        <Text style={[styles.columnHeader,{width:35}]}>Qty</Text>
+        <Text style={[styles.columnHeader,{width:43}]}>Rate</Text>
+        <Text style={[styles.columnHeader,{width:37}]}>Amt</Text>
+      </View>
+
+      {/* Table rows */}
+      {products.map((product, index) => (
+        console.log(product),
+        <View key={index} style={styles.tableRow}>
+          <Text style={[styles.cell,{width:63}]}>{product.name || ''}</Text>
+          <Text style={[styles.cell,{width:35}]}>{product.quantity || ''}</Text>
+          <Text style={[styles.cell,{width:43}]}>{product.price || ''}</Text>
+          <Text style={[styles.cell,{width:37}]}>{product.amount || ''}</Text>
+        </View>
+      ))}
+    </View>
+  </ScrollView>
+        {/* {products.map((product, index) => (
     <View key={index} style={styles.productContainer}>
       <Text style={styles.productTitle}>{product.name|| ''}</Text>
       <Text>{product.quantity|| ''}</Text>
-    </View>
-  ))}
+    </View> 
+  ))}*/}
       </View>
 
     </View>
@@ -277,6 +306,53 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+
+  price: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    marginTop: 15,
+  },
+
+  table: {
+    // borderWidth: 1,
+    // borderColor: 'grey',
+    margin: 10,
+  },
+  columnHeaderContainer: {
+    flexDirection: 'row',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'black',
+    // backgroundColor: '#f2f2f2',
+  },
+  columnHeader: {
+    flex: 1,
+    borderWidth:1,
+    borderColor:'grey',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color:'black'
+  },
+  tableRow: {
+    flexDirection: 'row',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'grey',
+  },
+  cell: {
+    flex: 1,
+    paddingVertical: 10,
+     paddingHorizontal: 5,
+    borderWidth: 1,
+    borderColor: '#D3D3D3',
+    textAlign: 'center',
+    fontSize:11,
+    color: 'black',
+    // width:windowWidth/4
+  },
+
   productBoxContainer: {
     elevation: 2, // Apply elevation to this wrapping View
     // marginRight: 10,
@@ -309,6 +385,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
+  productPrice: {
+    fontSize: 12,
+    color: 'white',
+    textAlign: 'center',
+  },
   quantityInput: {
     backgroundColor:'#fff',
     fontSize: 14,
@@ -316,8 +397,10 @@ const styles = StyleSheet.create({
     borderColor: '#84889a',
     padding: 5,
     width: '25%',
+    placeholderTextColor:'grey',
     borderRadius: 5,
-    marginTop:'20%',
+    // marginTop:'20%',
+    color:'black',
     marginLeft:'-7%'
   },
   container: {
@@ -360,6 +443,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: windowWidth * 0.03,
     paddingRight: windowWidth * 0.03,
+    color:'grey'
   },
   dropdownContainer: {
     // backgroundColor: '#76a901',
@@ -367,7 +451,8 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.2,
     alignSelf: 'center',
     borderRadius: windowWidth * 0.01,
-    zIndex:2
+    zIndex:2,
+    color:'grey'
   },
   
   dropdownArea: {
@@ -383,6 +468,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    color:'grey'
   },
   searchInput: {
     width: '100%',
@@ -393,6 +479,7 @@ const styles = StyleSheet.create({
     borderEndWidth: 1,
     alignSelf: 'auto',
     elevation: 2,
+    color:'grey',
   },
   ddownItems: {
     width: windowWidth * 0.95,
@@ -401,6 +488,7 @@ const styles = StyleSheet.create({
     //  alignSelf: 'center',
     borderBottomColor: '#8e8e8e',
     justifyContent: 'center',
+    color: 'grey',
   },
   rowContainer: {
     flex: 1,
@@ -437,6 +525,7 @@ const styles = StyleSheet.create({
     marginBottom:10,
     marginLeft:windowWidth/1.5,
     width:windowWidth/3,
+    zIndex:1,
     // backgroundColor:'blue'
   },
   columnBtnContainer:{
