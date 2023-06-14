@@ -156,6 +156,7 @@ const SalesScreen = ({}) => {
       <View style={styles.parallelContainer}>
         {/* First parallel container */}
         {/* Place your content here */}
+        <ScrollView vertical>
         <View style={styles.productContainer}>
       <LinearGradient
   colors={['#F0F2E4', '#D2DAC2']}
@@ -255,6 +256,8 @@ const SalesScreen = ({}) => {
   />
 </LinearGradient>
 </View>
+        </ScrollView>
+       
       </View>
       <View style={styles.parallelContainer}>
         {/* Second parallel container */}
@@ -269,7 +272,7 @@ const SalesScreen = ({}) => {
       </View>
 
       {/* Table rows */}
-      {products.map((product, index) => (
+      {/* {products.map((product, index) => (
         console.log(product),
         <View key={index} style={styles.tableRow}>
           <Text style={[styles.cell,{width:63}]}>{product.name || ''}</Text>
@@ -277,7 +280,23 @@ const SalesScreen = ({}) => {
           <Text style={[styles.cell,{width:43}]}>{product.price || ''}</Text>
           <Text style={[styles.cell,{width:37}]}>{product.amount || ''}</Text>
         </View>
-      ))}
+      ))} */}
+       
+       {products.map((product, index) => {
+        // Display the row only if the product quantity is filled
+        if (product.quantity) {
+          return (
+            <View key={index} style={styles.tableRow}>
+              <Text style={[styles.cell, { width: 63 }]}>{product.name || ''}</Text>
+              <Text style={[styles.cell, { width: 35 }]}>{product.quantity || ''}</Text>
+              <Text style={[styles.cell, { width: 43 }]}>{product.price || ''}</Text>
+              <Text style={[styles.cell, { width: 37 }]}>{product.amount || ''}</Text>
+            </View>
+          );
+        } else {
+          return null; // Skip rendering the row if quantity is not filled
+        }
+      })}
     </View>
   </ScrollView>
         {/* {products.map((product, index) => (

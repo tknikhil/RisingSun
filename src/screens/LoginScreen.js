@@ -1,15 +1,17 @@
 import React, { useState ,useEffect,Dimensions} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {Input,Button} from '../app-widget';
+import loginService from '../service/LoginService';
 // import data from './../../assets/json-request/login.json'
 // import BottomBarNavigation from '../app-widget/BottomBarNavigation';
+
 
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-   const [error, setError] = useState('');
-  const [login, setUsers] = useState([]);
+   //  const [error, setError] = useState('');
+  // const [login, setUsers] = useState([]);
 
   // useEffect(() => {
   //   // Fetch user data from JSON file
@@ -18,37 +20,50 @@ const LoginScreen = ({navigation}) => {
   //     .then((data) => setUsers(data))
   //     .catch((error) => console.error(error));
   // }, []);
-  useEffect(() => {
-    // Load user data from JSON file
-    const userData = require('../../assets/json-request/login.json');
-    setUsers(userData);
-    // print(userData);
-    console.log(userData);
-  }, []);
+  // useEffect(() => {
+  //   // Load user data from JSON file
+  //   const userData = require('../../assets/json-request/login.json');
+  //   setUsers(userData);
+  //   // print(userData);
+  //   console.log(userData);
+  // }, []);
 
-  const handleLogin = () => {
-    // print("handleLogin");
-    console.log("handleLogin");
-    // Find the user by username and password
-    const user = login.find(
-      (u) => u.email === email && u.password === password
-    );
-    console.log(user);
-    if (user) {
-      // User found, navigate to the appropriate screen based on role
-      if (user.role === 'admin') {
-        // Display admin screen
-       navigation.navigate('Admin');
+  // const handleLogin = () => {
+  //   // print("handleLogin");
+  //   console.log("handleLogin");
+  //   // Find the user by username and password
+  //   const user = login.find(
+  //     (u) => u.email === email && u.password === password
+  //   );
+  //   console.log(user);
+  //   if (user) {
+  //     // User found, navigate to the appropriate screen based on role
+  //     if (user.role === 'admin') {
+  //       // Display admin screen
+  //      navigation.navigate('Admin');
         
-      } else if (user.role === 'sales') {
-        // Display sales screen
+  //     } else if (user.role === 'sales') {
+  //       // Display sales screen
+  //       navigation.navigate('BottomNavBar');
+  //     }
+  //   }
+  //   else {
+  //     setError('Invalid username or password');
+  //   }
+  // };
+ 
+
+  const handleSubmit= ()=>{
+    loginService(email, password)
+      .then(() => {
+        
         navigation.navigate('BottomNavBar');
-      }
-    }
-    else {
-      setError('Invalid username or password');
-    }
-  };
+      })
+      .catch(error => {
+        console.error('Login Error:', error);
+        // Alert.alert('Login Error', 'An error occurred during login.');
+      });
+  }
 
 
   return (
@@ -73,7 +88,7 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
       <View style={styles.btnContainer}>
-      <Button  onPress={handleLogin} text={'Login'}/>
+      <Button  onPress={handleSubmit} text={'Login'}/>
       </View>
     </View>
   );
