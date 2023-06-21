@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity, ScrollView} from 'react-native'
-import React,{useRef, useState} from 'react'
+import { View, Text, StyleSheet ,Dimensions,Modal,TouchableOpacity, ScrollView,ActivityIndicator} from 'react-native'
+import React,{useRef, useState,useEffect} from 'react'
 import ddown from "../../assets/json-request/ddown.json"
 import Icon from 'react-native-vector-icons/dist/AntDesign'
 import { FlatList, TextInput } from 'react-native-gesture-handler'
@@ -7,6 +7,9 @@ import { Button } from '../app-widget'
 import Form from './component/Form'
 import { TabActions, useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+
+import axios from 'axios';
+import { PAGINATION } from '../url/ConstantURL'
 
 const SalesScreen = ({}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
@@ -72,6 +75,38 @@ const SalesScreen = ({}) => {
 //  const handleNewCustomer=()=>{
 //   navigation.navigate('Form');
 //  }
+
+  const [cdata, setCData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+const fetchData = async () => {
+  setIsLoading(true);
+
+  try {
+    const response = await axios.get(
+      `https://randomuser.me/api/?page=${page}&results=5`
+    );
+    const newData = response.data.results;
+
+    setCData((prevData) => [...prevData, ...newData]);
+    setPage((prevPage) => prevPage + 1);
+  } catch (error) {
+    console.error(error);
+  }
+
+  setIsLoading(false);
+};
+
+useEffect(() => {
+  fetchData();
+}, []);
+
+const handleLoadMore = () => {
+  if (!isLoading) {
+    fetchData();
+  }
+};
  const handleEditCustomer=()=>{
   console.log('handleCustomer');
  }
@@ -132,7 +167,10 @@ const SalesScreen = ({}) => {
     </View>
      {isDropDownOpen? <View style={styles.dropdownArea}>
       <TextInput ref={searchRef} placeholder='Search' style={styles.searchInput} onChangeText={(txt)=>{onSearch(txt);}}/>
-      <FlatList data={data} renderItem={({item,index})=>{
+      <FlatList 
+      data={cdata} 
+      keyExtractor={(item) => item.name}
+      renderItem={({item})=>{
         return(
           <TouchableOpacity style={styles.ddownItems} onPress={()=>{
             setSelectedCustomer(item.name);
@@ -141,11 +179,17 @@ const SalesScreen = ({}) => {
             setIsCustomerSelected(true);
             searchRef.current.clear();
           }}>
-            <Text>{item.name}</Text>
+            <Text>{item.email}</Text>
             
           </TouchableOpacity>
         );
-      }}/>
+      }}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={
+      isLoading ? <ActivityIndicator size="large" /> : null
+      }
+      />
      
      </View>:null}
    
