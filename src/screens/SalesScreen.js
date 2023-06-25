@@ -85,9 +85,10 @@ const fetchData = async () => {
 
   try {
     const response = await axios.get(
-      `https://randomuser.me/api/?page=${page}&results=5`
+      `http://192.168.0.244:9006/PosErp/v1/Act/customer?itemSize=5&page=${page}`
     );
-    const newData = response.data.results;
+    const newData = response.data.customerListInPage;
+    console.log(newData);
 
     setCData((prevData) => [...prevData, ...newData]);
     setPage((prevPage) => prevPage + 1);
@@ -169,11 +170,11 @@ const handleLoadMore = () => {
       <TextInput ref={searchRef} placeholder='Search' style={styles.searchInput} onChangeText={(txt)=>{onSearch(txt);}}/>
       <FlatList 
       data={cdata} 
-      keyExtractor={(item) => item.name}
+      keyExtractor={(item) => item.custName}
       renderItem={({item})=>{
         return(
           <TouchableOpacity style={styles.ddownItems} onPress={()=>{
-            setSelectedCustomer(item.name);
+            setSelectedCustomer(item.custName);
             onSearch('');
             setIsDropDownOpen(false);
             setIsCustomerSelected(true);

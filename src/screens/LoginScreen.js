@@ -13,57 +13,58 @@ const LoginScreen = ({navigation}) => {
    //  const [error, setError] = useState('');
   const [login, setUsers] = useState([]);
 
-  // useEffect(() => {
-  //   // Fetch user data from JSON file
-  //   fetch('./../../assets/json-request/login.json')
-  //     .then((response) => response.json())
-  //     .then((data) => setUsers(data))
-  //     .catch((error) => console.error(error));
-  // }, []);
   useEffect(() => {
-    // Load user data from JSON file
-    const userData = require('../../assets/json-request/login.json');
-    setUsers(userData);
-    // print(userData);
-    console.log(userData);
+    // Fetch user data from JSON file
+    fetch('./../../assets/json-request/login.json')
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .catch((error) => console.error(error));
   }, []);
+  // useEffect(() => {
+  //   // Load user data from JSON file
+  //   const userData = require('../../assets/json-request/login.json');
+  //   setUsers(userData);
+  //   // print(userData);
+  //   console.log(userData);
+  // }, []);
 
-  const handleLogin = () => {
-    // print("handleLogin");
-    console.log("handleLogin");
-    // Find the user by username and password
-    const user = login.find(
-      (u) => u.email === email && u.password === password
-    );
-    console.log(user);
-    if (user) {
-      // User found, navigate to the appropriate screen based on role
-      if (user.role === 'admin') {
-        // Display admin screen
-       navigation.navigate('Admin');
+  // const handleLogin = () => {
+  //   // print("handleLogin");
+  //   console.log("handleLogin");
+  //   // Find the user by username and password
+  //   const user = login.find(
+  //     (u) => u.email === email && u.password === password
+  //   );
+  //   console.log(user);
+  //   if (user) {
+  //     // User found, navigate to the appropriate screen based on role
+  //     if (user.role === 'admin') {
+  //       // Display admin screen
+  //      navigation.navigate('Admin');
         
-      } else if (user.role === 'sales') {
-        // Display sales screen
-        navigation.navigate('BottomNavBar');
-      }
-    }
-    else {
-      setError('Invalid username or password');
-    }
-  };
+  //     } else if (user.role === 'sales') {
+  //       // Display sales screen
+  //       navigation.navigate('BottomNavBar');
+  //     }
+  //   }
+  //   else {
+  //     setError('Invalid username or password');
+  //   }
+  // };
  
 
-  // const handleSubmit= ()=>{
-  //   loginService(email, password)
-  //     .then(() => {
+  const handleSubmit= ()=>{
+   console.log(email,password);
+    loginService(email, password)
+      .then(() => {
         
-  //       navigation.navigate('BottomNavBar');
-  //     })
-  //     .catch(error => {
-  //       console.error('Login Error:', error);
-  //       // Alert.alert('Login Error', 'An error occurred during login.');
-  //     });
-  // }
+        navigation.navigate('BottomNavBar');
+      })
+      .catch(error => {
+        console.error('Login Error:', error);
+        // Alert.alert('Login Error', 'An error occurred during login.');
+      });
+  }
 
 
   return (
@@ -75,7 +76,7 @@ const LoginScreen = ({navigation}) => {
       </View>
       <View style={[styles.inputContainer]}>
       <Input
-          placeholder="Email"
+          placeholder="Username"
           secureTextEntry={false}
           onChangeText={(text) => setEmail(text)}
           value={email}
@@ -88,7 +89,7 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
       <View style={styles.btnContainer}>
-      <Button  onPress={handleLogin} text={'Login'}/>
+      <Button  onPress={handleSubmit} text={'Login'}/>
       </View>
     </View>
   );
