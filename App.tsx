@@ -9,6 +9,7 @@ import { StyleSheet } from 'react-native';
 import BottomBarNavigation from './src/screens/BottomBarNavigation';
 import Form from './src/screens/component/Form';
 import BillingScreen from './src/screens/BillingScreen';
+import index from './src/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const App = () => {
         <Stack.Screen name="Sales" component={SalesScreen} />
         <Stack.Screen name="Billing" component={BillingScreen} />
         <Stack.Screen name="BottomNavBar" component={BottomBarNavigation}/>
+        <Stack.Screen name="Index" component={index}/>
         <Stack.Screen name='Form' component={Form} />
         {/* <Stack.Screen name='CustRegistration' component={CustRegisteration} />
         <Stack.Screen name='PersonalDetail' component={PersonalDetail} />

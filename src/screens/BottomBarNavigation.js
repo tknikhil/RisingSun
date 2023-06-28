@@ -9,9 +9,11 @@ const Tab = createBottomTabNavigator();
 const BottomBarNavigation = () => {
   return (
     <Tab.Navigator
+    
     screenOptions={{
       tabBarLabelStyle: { fontSize: 16 },
-      // headerShown:false
+      tabBarStyle:{width:'100%',borderRadius:15},
+      headerShown:false
     }}
   >
       <Tab.Screen 

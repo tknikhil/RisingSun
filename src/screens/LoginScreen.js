@@ -44,7 +44,7 @@ const LoginScreen = ({navigation}) => {
         
       } else if (user.role === 'sales') {
         // Display sales screen
-        navigation.navigate('BottomNavBar');
+        navigation.navigate('Index');
       }
     }
     else {
