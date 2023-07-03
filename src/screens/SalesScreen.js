@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import axios from 'axios';
 import { PAGINATION } from '../url/ConstantURL'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const SalesScreen = ({}) => {
  const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
@@ -117,6 +118,16 @@ const handleLoadMore = () => {
  const handleEditCustomer=()=>{
   console.log('handleCustomer');
  }
+
+ const calculateTotal = (products) => {
+  let total = 0;
+  products.forEach((product) => {
+    if (product.amount) {
+      total += parseFloat(product.amount);
+    }
+  });
+  return total.toFixed(2);
+};
   return (
       <View style={styles.container}>
        
@@ -135,18 +146,18 @@ const handleLoadMore = () => {
       <View style={styles.columnContainer}>
       <View style={styles.columnBtnContainer}>
       <Button onPress={openPopup} text={'New'} style={styles.newbutton} />
-      <Modal visible={isPopupVisible} animationType="slide" transparent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
-          <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
-              <Icon name="close" size={20} color="red" />
-            </TouchableOpacity>
-          <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%', maxHeight: '50%', }}>
-          
-          <Form style={{height:'50%',width:'80%'}}/>
-          
+        <Modal visible={isPopupVisible} animationType="slide" transparent={true}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+            <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
+                <Icon name="close" size={20} color="red" />
+              </TouchableOpacity>
+            <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%', height:'40%', }}>
+            
+            <Form style={{flex:1,height:'100%',width:'80%'}}/>
+            
+            </View>
+            
           </View>
-          
-        </View>
       </Modal>
     </View>
     </View>
@@ -357,6 +368,11 @@ const handleLoadMore = () => {
       <Text>{product.quantity|| ''}</Text>
     </View> 
   ))}*/}
+   <View style={styles.bottomBlock}>
+    <Text style={styles.taxLabel}>CGST: 10%</Text>
+    <Text style={styles.taxLabel}>SCST: 5%</Text>
+    <Text style={styles.totalLabel}>Total: {    calculateTotal(products)} INR</Text>
+  </View> 
       </View>
 
     </View>
@@ -380,6 +396,31 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+
+  bottomBlock: {
+    // backgroundColor: '#f2f2f2',
+    borderColor:'grey',
+    borderWidth:1,
+    width:'100%',
+    padding: 10,
+    marginTop: 20,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  taxLabel: {
+    textAlign:'right',
+    borderBottomColor:  '#E8E8E8',
+    borderBottomWidth:1,
+    width:'100%',
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: 'gray',
+  },
+  totalLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 
   price: {
     color: '#fff',

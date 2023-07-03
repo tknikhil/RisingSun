@@ -36,7 +36,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles=StyleSheet.create({
   personalDetailConatiner:{
+    flex:1,
     width:windowWidth*.7,
-    height:'85%',
+    height:'100%',
   }
 });

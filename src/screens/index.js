@@ -12,7 +12,6 @@ const [selectedMenuItem, setSelectedMenuItem] = useState(0);
  const menu = [
    {icon: require('../../assets/images/home.png'), title: 'Home'},
    {icon: require('../../assets/images/product.png'), title: 'Products'},
-   {icon: require('../../assets/images/customer.png'), title: 'Customers'},
    {icon: require('../../assets/images/logout.png'), title: 'Logout'},
  ];
  const renderSelectedScreen = () => {
@@ -21,7 +20,6 @@ const [selectedMenuItem, setSelectedMenuItem] = useState(0);
         return <BottomBarNavigation/>;
      case 'Products':
        return <ProductsScreen />; // Render the ProductsScreen component for the 'Products' menu item
-     case 'Customers':
        return <CustomersScreen />; // Render the CustomersScreen component for the 'Customers' menu item
      // Add cases for other menu items as needed
      default:
