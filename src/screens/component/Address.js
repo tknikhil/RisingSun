@@ -21,9 +21,5 @@ export default Address
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const styles=StyleSheet.create({
-  addressContiner:{
-    margin:'10%',
-    width:windowWidth*.7,
-    height:'65%',
-  }
+  
 })

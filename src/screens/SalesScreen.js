@@ -151,9 +151,11 @@ const handleLoadMore = () => {
             <TouchableOpacity onPress={closePopup} style={{ marginTop: 10,marginLeft:'80%',backgroundColor:'white',borderColor:'red',borderWidth:3,borderRadius:30 }}>
                 <Icon name="close" size={20} color="red" />
               </TouchableOpacity>
-            <View style={{ backgroundColor: 'white', padding: 20,borderRadius:20,width:'80%', height:'40%', }}>
+            <View style={{ backgroundColor: 'white',borderRadius:20,width:'80%', height:'50%', }}>
             
-            <Form style={{flex:1,height:'100%',width:'80%'}}/>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+  <Form />
+</ScrollView>
             
             </View>
             
@@ -638,10 +640,10 @@ const styles = StyleSheet.create({
     // elevation: 10,
   },
   submitBtnContainer:{
-    marginBottom:10,
+    marginBottom:-10,
     marginLeft:windowWidth/1.5,
     width:windowWidth/3,
-    zIndex:1,
+    // zIndex:1,
     // backgroundColor:'blue'
   },
   columnBtnContainer:{

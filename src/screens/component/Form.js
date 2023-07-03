@@ -70,8 +70,8 @@ const Form = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+   padding:5
   },
   title: {
     fontSize: 18,
@@ -83,9 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingHorizontal: 20,
+   
   },
   btnContainer: {
-    backgroundColor:'grey',
+    // backgroundColor:'grey',
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
