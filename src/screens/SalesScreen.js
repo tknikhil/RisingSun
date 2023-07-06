@@ -7,6 +7,7 @@ import { Button } from '../app-widget'
 import Form from './component/Form'
 import { TabActions, useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from 'axios';
 import { PAGINATION } from '../url/ConstantURL'
@@ -27,6 +28,8 @@ const SalesScreen = ({}) => {
 
  const [isPopupVisible, setIsPopupVisible] = useState(false);
  const [isCustomerSelected, setIsCustomerSelected] = useState(false);
+
+ 
 
 
  
@@ -86,15 +89,40 @@ const SalesScreen = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
 
 const fetchData = async () => {
+  // setIsLoading(true);
+
+  // try {
+  //   const response = await axios.get(
+  //     `http://106.51.64.62:9006/PosErp/v1/Act/customer?itemSize=2&page=${page}`
+  //     // `https://randomuser.me/api/?page=${page}&results=5`
+  //   );
+  //   // const newData = response.data.customerListInPage;
+  //   console.log(response);
+  //   const newData= response.data.results;
+  //   // console.log(newData);
+
+  //   setCData((prevData) => [...prevData, ...newData]);
+  //   setPage((prevPage) => prevPage + 1);
+  // } catch (error) {
+  //   console.error(error);
+  // }
+
+  // setIsLoading(false);
   setIsLoading(true);
 
   try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    console.log('accessoken :', accessToken);
     const response = await axios.get(
-      // `http://192.168.0.244:9006/PosErp/v1/Act/customer?itemSize=5&page=${page}`
-      `https://randomuser.me/api/?page=${page}&results=5`
+      `http://106.51.64.62:9006/PosErp/v1/Act/customer?itemSize=5&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
-    // const newData = response.data.customerListInPage;
-    const newData= response.data.results;
+    console.log(response.data.data);
+    const newData = response.data.data.customerListInPage;
     console.log(newData);
 
     setCData((prevData) => [...prevData, ...newData]);
@@ -200,7 +228,7 @@ const handleLoadMore = () => {
             setIsCustomerSelected(true);
             searchRef.current.clear();
           }}>
-            <Text>{item.email}</Text>
+            <Text>{item.custName}</Text>
             
           </TouchableOpacity>
         );
