@@ -147,6 +147,7 @@ import { printToFileAsync } from 'expo-print'
       </thead>
       <tbody id="invoice-items" class="tbody">
       <!-- Dynamic rows will be added here -->
+      ${invoiceItems}
       </tbody>
       <tfoot>
   <tr>
@@ -212,7 +213,7 @@ const printHTMLToPDF = async () => {
     }
 
     const options = {
-      html: htmlContent,
+      html: invoiceHtml,
       fileName: 'example.pdf',
       directory: 'Documents',
     };
@@ -220,30 +221,52 @@ const printHTMLToPDF = async () => {
   const file = await RNHTMLtoPDF.convert(options);
   console.log(file.filePath);
 };
-
+const invoiceItems = generateInvoiceItemRows();
 
   // Function to generate the invoice item rows
 function generateInvoiceItemRows() {
-  const invoiceItemsContainer = document.getElementById("invoice-items");
-  let rows = "";
+  // const invoiceItemsContainer = document.getElementById("invoice-items");
+  // let rows = "";
+
+  // for (let i = 0; i < products.length; i++) {
+  //   const product = products[i];
+  //   if (product.quantity) {
+  //     const row = `<tr>
+  //       <td>${product.name}</td>
+  //       <td>${product.quantity}</td>
+  //       <td>${product.price}</td>
+  //       <td>${product.amount}</td>
+  //       <td></td>
+  //       <td></td>
+  //       <td></td>
+  //     </tr>`;
+  //     rows += row;
+  //   }
+  // }
+
+  // invoiceItemsContainer.innerHTML = rows;
+
+  const rows = [];
 
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
     if (product.quantity) {
-      const row = `<tr>
-        <td>${product.name}</td>
-        <td>${product.quantity}</td>
-        <td>${product.price}</td>
-        <td>${product.amount}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>`;
-      rows += row;
+      const row = (
+        <View key={i} style={styles.row}>
+          <Text>{product.name}</Text>
+          <Text>{product.quantity}</Text>
+          <Text>{product.price}</Text>
+          <Text>{product.amount}</Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+        </View>
+      );
+      rows.push(row);
     }
   }
 
-  invoiceItemsContainer.innerHTML = rows;
+  return rows;
 }
 
 // Function to calculate and update the subtotal values
