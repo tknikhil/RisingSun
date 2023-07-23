@@ -7,8 +7,6 @@ const ProductService = async() => {
 
 
 console.log('fetchProduct',BASE_URL(),ITEM_LIST());
-
-
         try {
             const accessToken = await AsyncStorage.getItem('accessToken');
             console.log('accessoken :', accessToken);
@@ -22,16 +20,16 @@ console.log('fetchProduct',BASE_URL(),ITEM_LIST());
             );
             // console.log('Item data ============',response.data.data);
             const data =response.data.data;
-            // console.log('Product service data',data);
+
+            
+            console.log('Product service data',data);
             console.log('Item name',response.data.data.itemList[0].itmName);
-            console.log('Item price',response.data.data.itemList.itemPriceList[0].itmPrice);
-            await AsyncStorage.setItem('productData', JSON.stringify(response.data.data));
+            console.log('Item price',response.data.data.itemList[0].itemPriceList[0].itmPrice);
+            await AsyncStorage.setItem('productData', JSON.stringify(data));
             return data
           } catch (error) {
             console.error(error);
           }
- 
-
 }
 
 export default ProductService

@@ -83,22 +83,45 @@ import ProductService from '../service/ProductService';
     //       console.error(error);
     //     }
 
-    try {
-      const cachedData = await AsyncStorage.getItem('productData');
-      console.log('Cached product cachedData:', cachedData);
-      if (cachedData) {
-        const data = JSON.parse(cachedData);
-        console.log('Cached product data:', data);
-        // Do whatever you want with the cached data
-      } else {
-        // Data not found in cache, fetch it from the server
-        const data = await ProductService();
-        // Do whatever you want with the fetched data
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const cachedData = await AsyncStorage.getItem('productData');
+    //   console.log('Cached product cachedData:', cachedData);
+    //   if (cachedData) {
+    //     const data = JSON.parse(cachedData);
+    //     console.log('Cached product data:', data);
+    //     // Do whatever you want with the cached data
+    //   } else {
+    //     // Data not found in cache, fetch it from the server
+    //     const data = await ProductService();
+    //     // Do whatever you want with the fetched data
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    return new Promise((resolve, reject) => {
+      ProductService()
+        .then((data) => {
+          console.log('sales screen data:', data);
+          resolve(data);
+        })
+        .catch((error) => {
+          console.error(error);
+          reject(error);
+        });
+    });
   }
+
+  fetchProductData()
+  .then((productList) => {
+    // Do something with the productList, e.g., set it to state
+    console.log('sales Screen product',productList);
+    setProductList(productList);
+  })
+  .catch((error) => {
+    // Handle any errors that occurred during the fetch
+    console.error('Error fetching data:', error);
+  });
 
   const fetchData = async () => {
  
