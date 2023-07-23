@@ -1,10 +1,6 @@
-import { View, Text } from 'react-native'
-import React from 'react'
 
-// const ConstantURL = () => {
- export const BASE_URL=()=>'http://192.168.0.244:9006/PosErp/v1';
+//  export const BASE_URL=()=>'http://192.168.0.244:9006/PosErp/v1';//office private url
+ export const BASE_URL=()=>'http://106.51.64.62:9006/PosErp/v1';//public url
  export const LOGIN_URL=()=>'/Auth/login';
- export const PAGINATION=()=>'https://randomuser.me/api/?'
-// }
-
-// export default ConstantURL
+ export const CUSTOMER_PAGINATION=()=>'/Act/customer?itemSize=5&page=';
+ export const ITEM_LIST=()=>'/Inv/inventory/list';

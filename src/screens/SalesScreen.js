@@ -19,9 +19,14 @@ import { PermissionsAndroid } from 'react-native';
   import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { printToFileAsync } from 'expo-print'
 
+
+import {BASE_URL,CUSTOMER_PAGINATION} from '../url/ConstantURL';
+import ProductService from '../service/ProductService';
+
   const SalesScreen = ({}) => {
   const [selectedCustomer,setSelectedCustomer]=useState('Select Customer');
   const [products, setProducts] = useState([]);
+  const [productList, setProductList] = useState([]);
   const [product1Price, setProduct1Price] = useState('199.99');
   const [isDropDownOpen,setIsDropDownOpen]=useState(false);
   const [data,setData]=useState(ddown);
@@ -36,250 +41,7 @@ import { printToFileAsync } from 'expo-print'
   const [isCustomerSelected, setIsCustomerSelected] = useState(false);
 
 
-  const invoiceHtml = `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>RisingSun Invoice</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
   
-      .invoice-header {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-  
-      .invoice-info {
-        margin-bottom: 10px;
-      }
-  
-      .invoice-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-  
-      .invoice-table th,
-      .invoice-table td {
-        padding: 1px;
-        border: 1px solid #ccc;
-      }
-  
-      .custInfo-table {
-        dir: rtl;
-      }
-  
-      .custInfo-table tr,
-      .custInfo-table td {
-        padding: 1px;
-        border: none;
-      }
-  
-      .invoice-table th {
-        background-color: #f2f2f2;
-        text-align: center;
-      }
-  
-      .tbody {
-        text-align: center;
-      }
-  
-      .invoice-total {
-        text-align: right;
-        margin-left: 80%;
-        margin-top: 2%;
-      }
-  
-      .invoice-total table {
-        text-align: left;
-      }
-  
-      .invoice-total td {
-        padding: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="invoice-header">
-      <h2>RisingSun Invoice</h2>
-    </div>
-  
-    <table class="invoice-table">
-      <tr>
-        <td>
-          <pre><strong>From,<p>RisingSun</strong>
-  123 Main Street
-  City, State, ZIP
-  <strong>Contact:</strong>1234567890           GSTIN:24AARCA4507C1ZZ</p></pre>
-        </td>
-        <td>
-          <table class="custInfo-table">
-            <tr>
-              <td><strong>Invoice No:</strong>12345</td>
-  
-              <td><strong>Billing Date:</strong>July 7, 2023</td>
-            </tr>
-            <tr>
-              <td>
-                <pre><strong>To,<p>John Doe</strong>
-  123 Customer Street
-  City, State, ZIP
-  <strong>Contact:</strong>1234567890           GSTIN:24AARCA4507C1ZZ</p></pre>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  
-    <table class="invoice-table">
-      <thead>
-        <tr>
-          <th>Product Detail</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Taxable Amount</th>
-          <th>CGST</th>
-          <th>SGST</th>
-          <th>Total Amount</th>
-        </tr>
-      </thead>
-      <tbody id="invoice-items" class="tbody">
-      <!-- Dynamic rows will be added here -->
-      ${invoiceItems}
-      </tbody>
-      <tfoot>
-  <tr>
-    <td colspan="3"></td>
-    <td id="subtotal-taxable-amount"></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</tfoot>
-    </table>
-  
-    <div class="invoice-total">
-      <table>
-        <tr>
-          <td><strong>Gross Amount:</strong></td>
-          <td>35.50</td>
-        </tr>
-        <tr>
-          <td><strong>Add:CGST:</strong></td>
-          <td>1.75</td>
-        </tr>
-        <tr>
-          <td><strong>Add:SGST:</strong></td>
-          <td>1.75</td>
-        </tr>
-        <tr>
-          <td><strong>Total Amount:</strong></td>
-          <td>38.50</td>
-        </tr>
-      </table>
-    </div>
-  </body>
-  </html>
-`;
-
-  
-const printHTMLToPDF = async () => {
-  // const htmlContent = '<html><body><h1>Hello, PDF!</h1></body></html>';
-
-  // const { uri } = await RNFetchBlob.config({
-  //   fileCache: true,
-  // }).fetch('GET', 'data:text/html;base64,' + btoa(invoiceHtml));
-
-  // await Print.printToFile({ html: uri });
-
-//   const file = await printToFileAsync({
-//     html:invoiceHtml,
-//     base64:false
-//   });
-// await shareAsync(file.uri);
-  // The PDF file will be saved in the device's document directory
-
-
-  if (Platform.OS === 'android') {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-    );
-    
-    if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Permission denied');
-      return;
-    }
-
-    const options = {
-      html: invoiceHtml,
-      fileName: 'example.pdf',
-      directory: 'Documents',
-    };
-  }
-  const file = await RNHTMLtoPDF.convert(options);
-  console.log(file.filePath);
-};
-const invoiceItems = generateInvoiceItemRows();
-
-  // Function to generate the invoice item rows
-function generateInvoiceItemRows() {
-  // const invoiceItemsContainer = document.getElementById("invoice-items");
-  // let rows = "";
-
-  // for (let i = 0; i < products.length; i++) {
-  //   const product = products[i];
-  //   if (product.quantity) {
-  //     const row = `<tr>
-  //       <td>${product.name}</td>
-  //       <td>${product.quantity}</td>
-  //       <td>${product.price}</td>
-  //       <td>${product.amount}</td>
-  //       <td></td>
-  //       <td></td>
-  //       <td></td>
-  //     </tr>`;
-  //     rows += row;
-  //   }
-  // }
-
-  // invoiceItemsContainer.innerHTML = rows;
-
-  const rows = [];
-
-  for (let i = 0; i < products.length; i++) {
-    const product = products[i];
-    if (product.quantity) {
-      const row = (
-        <View key={i} style={styles.row}>
-          <Text>{product.name}</Text>
-          <Text>{product.quantity}</Text>
-          <Text>{product.price}</Text>
-          <Text>{product.amount}</Text>
-          <Text></Text>
-          <Text></Text>
-          <Text></Text>
-        </View>
-      );
-      rows.push(row);
-    }
-  }
-
-  return rows;
-}
-
-// Function to calculate and update the subtotal values
-function updateSubtotal() {
-  const taxableAmounts = products.map((product) => product.amount);
-
-  const subtotalTaxableAmount = document.getElementById("subtotal-taxable-amount");
-
-  const sumTaxableAmount = taxableAmounts.reduce((acc, curr) => acc + curr, 0);
-
-  subtotalTaxableAmount.textContent = sumTaxableAmount.toFixed(2);
-}
-
 
     const openPopup = () => {
       setIsPopupVisible(true);
@@ -301,69 +63,52 @@ function updateSubtotal() {
     }
     setIsCustomerSelected(false)
   }
-  const updateProducts = (productIndex, quantity,price) => {
-    const updatedProducts = [...products];
-
-    if (updatedProducts.length < productIndex) {
-      // Initialize the products array with empty objects until the desired index
-      for (let i = updatedProducts.length; i < productIndex; i++) {
-        updatedProducts.push({});
-      }
-    }
-
-    updatedProducts[productIndex - 1] = {
-      name: `Product ${productIndex}`,
-      quantity: quantity,
-      price: price,
-      amount: quantity * price 
-    };
+  
+  const handleSubmit =async ()=>{
+    console.log('handleSubmit');
     
-    setProducts(updatedProducts);
-  };
-  const handleSubmit =()=>{
-    generateInvoiceItemRows();
-updateSubtotal();
-printHTMLToPDF();
-    // navigation.navigate('Billing', {
-    //   customer: selectedCustomer,
-    //   products: products,
-    // });
   }
-  //  const handleNewCustomer=()=>{
-  //   navigation.navigate('Form');
-  //  }
 
     const [cdata, setCData] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-  const fetchData = async () => {
-    // setIsLoading(true);
 
+  const fetchProductData= async ()=>{
     // try {
-    //   const response = await axios.get(
-    //     `http://106.51.64.62:9006/PosErp/v1/Act/customer?itemSize=2&page=${page}`
-    //     // `https://randomuser.me/api/?page=${page}&results=5`
-    //   );
-    //   // const newData = response.data.customerListInPage;
-    //   console.log(response);
-    //   const newData= response.data.results;
-    //   // console.log(newData);
+    //       const data = await fetchProduct();
+    //       console.log('sales screen data:',data);
+    //       setProductList(data.itemList);
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
 
-    //   setCData((prevData) => [...prevData, ...newData]);
-    //   setPage((prevPage) => prevPage + 1);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const cachedData = await AsyncStorage.getItem('productData');
+      console.log('Cached product cachedData:', cachedData);
+      if (cachedData) {
+        const data = JSON.parse(cachedData);
+        console.log('Cached product data:', data);
+        // Do whatever you want with the cached data
+      } else {
+        // Data not found in cache, fetch it from the server
+        const data = await ProductService();
+        // Do whatever you want with the fetched data
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-    // setIsLoading(false);
+  const fetchData = async () => {
+ 
     setIsLoading(true);
 
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
       console.log('accessoken :', accessToken);
       const response = await axios.get(
-        `http://106.51.64.62:9006/PosErp/v1/Act/customer?itemSize=5&page=${page}`,
+        `${BASE_URL()}${CUSTOMER_PAGINATION()}${page}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -384,7 +129,22 @@ printHTMLToPDF();
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData();//get customer record
+
+
+    // const productData=fetchProduct();
+    // console.log('salesScreen',productData);
+    // const fetchData = async () => {
+    //   try {
+    //     const data = await fetchProduct();
+    //     setProductList(data.itemList);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
+
+    fetchProductData();
+
   }, []);
 
   const handleLoadMore = () => {
@@ -499,22 +259,28 @@ printHTMLToPDF();
           {/* First parallel container */}
           {/* Place your content here */}
           <ScrollView vertical>
-          <View style={styles.productContainer}>
+          {productList.map((product, index) => (
+      <View style={styles.productContainer}>
         <LinearGradient
     colors={['#F0F2E4', '#D2DAC2']}
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 1 }}
     style={styles.productContainer}
   >
-
+ 
     <View style={styles.productBox}>
+   
+   
     <LinearGradient
     colors={['#2EAAFA', '#1F2F98']}
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 1 }}
     style={styles.productBox}>
-      <Text style={styles.productTitle}>Product 1</Text>
-      <Text style={styles.price}>₹{product1Price}</Text> 
+      <Text style={styles.productTitle}>{product.itmName}</Text>
+      {/* <Text style={styles.price}>₹{product1Price}</Text>  */}
+      {product.itemPriceList.length > 0 && (
+                <Text style={styles.price}>₹{product.itemPriceList[0].itmPrice}</Text>
+              )}
       </LinearGradient>
     </View>
   
@@ -531,73 +297,9 @@ printHTMLToPDF();
       // placeholderTextColor="#84889a"
     />
   </LinearGradient>
+ 
   </View>
-
-  <View style={styles.productContainer}>
-      
-  <LinearGradient
-    colors={['#F0F2E4', '#D2DAC2']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.productContainer}
-  >
-    <View style={styles.productBox}>
-    <LinearGradient
-    colors={['#2EAAFA', '#1F2F98']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.productBox}>
-      <Text style={styles.productTitle}>Product 2</Text>
-      <Text style={styles.price}>₹{product1Price}</Text> 
-      </LinearGradient>
-    </View>
-  
-    <TextInput
-      style={styles.quantityInput}
-      placeholder="Qty"
-      value={product2Quantity}
-      onChangeText={text => [
-        setProduct2Quantity(text),
-        updateProducts(2, text,product1Price)
-      ]}
-      keyboardType="numeric"
-      // placeholderTextColor="#84889a"
-    />
-  </LinearGradient>
-  </View>
-        {/* Third parallel container */}
-        <View style={styles.productContainer}>
-        <LinearGradient
-    colors={['#F0F2E4', '#D2DAC2']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.productContainer}
-  >
-
-    <View style={styles.productBox}>
-    <LinearGradient
-    colors={['#2EAAFA', '#1F2F98']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.productBox}>
-      <Text style={styles.productTitle}>Product 3</Text>
-      <Text style={styles.price}>₹{product1Price}</Text> 
-      </LinearGradient>
-    </View>
-  
-    <TextInput
-      style={styles.quantityInput}
-      placeholder="Qty"
-      value={product3Quantity}
-      onChangeText={text => [
-        setProduct3Quantity(text),
-        updateProducts(3, text,product1Price)
-      ]}
-      keyboardType="numeric"
-      // placeholderTextColor="#84889a"
-    />
-  </LinearGradient>
-  </View>
+  ))}
           </ScrollView>
         
         </View>
@@ -614,16 +316,7 @@ printHTMLToPDF();
         </View>
 
         {/* Table rows */}
-        {/* {products.map((product, index) => (
-          console.log(product),
-          <View key={index} style={styles.tableRow}>
-            <Text style={[styles.cell,{width:63}]}>{product.name || ''}</Text>
-            <Text style={[styles.cell,{width:35}]}>{product.quantity || ''}</Text>
-            <Text style={[styles.cell,{width:43}]}>{product.price || ''}</Text>
-            <Text style={[styles.cell,{width:37}]}>{product.amount || ''}</Text>
-          </View>
-        ))} */}
-        
+       
         {products.map((product, index) => {
           // Display the row only if the product quantity is filled
           if (product.quantity) {
@@ -641,12 +334,7 @@ printHTMLToPDF();
         })}
       </View>
     </ScrollView>
-          {/* {products.map((product, index) => (
-      <View key={index} style={styles.productContainer}>
-        <Text style={styles.productTitle}>{product.name|| ''}</Text>
-        <Text>{product.quantity|| ''}</Text>
-      </View> 
-    ))}*/}
+      
     <View style={styles.bottomBlock}>
       <Text style={styles.totalLabel}>Total: {    calculateTotal(products)} INR</Text>
     </View> 
@@ -656,16 +344,8 @@ printHTMLToPDF();
       <View style={styles.submitBtnContainer}>
       <Button onPress={handleSubmit} text={'Submit'} style={styles.newbutton} />
       </View>
-        </View>
-    
-
-      
-      
-      
-      
+        </View>  
     )
-
-
   }
 
   export default SalesScreen
@@ -708,15 +388,10 @@ printHTMLToPDF();
     },
 
     table: {
-      // borderWidth: 1,
-      // borderColor: 'grey',
       margin: 10,
     },
     columnHeaderContainer: {
       flexDirection: 'row',
-      // borderBottomWidth: 1,
-      // borderBottomColor: 'black',
-      // backgroundColor: '#f2f2f2',
     },
     columnHeader: {
       flex: 1,
@@ -730,8 +405,6 @@ printHTMLToPDF();
     },
     tableRow: {
       flexDirection: 'row',
-      // borderBottomWidth: 1,
-      // borderBottomColor: 'grey',
     },
     cell: {
       flex: 1,
@@ -742,13 +415,10 @@ printHTMLToPDF();
       textAlign: 'center',
       fontSize:11,
       color: 'black',
-      // width:windowWidth/4
     },
 
     productBoxContainer: {
       elevation: 2, // Apply elevation to this wrapping View
-      // marginRight: 10,
-      // flexDirection:'column',
       width:'100%',
       borderRadius: 5,
     },
@@ -756,21 +426,15 @@ printHTMLToPDF();
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 5,
-      // justifyContent:'space-between',
       overflow: 'hidden',
       marginTop:5,
       width:'100%',
-      // marginLeft: -20,
     },
     productBox: {
       width: '80%',
       height: 90,
       justifyContent: 'center',
-      // alignItems: 'center',
-      // marginRight: 10,
       borderRadius: 5,
-      // marginLeft: -20,
-    
     },
     productTitle: {
       fontSize: 16,
@@ -789,15 +453,12 @@ printHTMLToPDF();
       borderColor: '#84889a',
       padding: 5,
       width: '25%',
-      // placeholderTextColor:'grey',
       borderRadius: 5,
-      // marginTop:'20%',
       color:'black',
       marginLeft:'-7%'
     },
     container: {
       flex: 1,
-      // backgroundColor: '#eeeeee',
     },
     header: {
       fontSize: 19,
@@ -811,12 +472,9 @@ printHTMLToPDF();
       flexDirection: 'row',
       marginTop: windowHeight * 0.002,
       width: windowWidth * 0.95,
-      // backgroundColor:'red'
     },
     columnDropdownContainer:{
-      // flex:1,
       alignSelf: 'flex-start',
-      // backgroundColor:'white'
     },
     Text:{
       color:'blue',
@@ -838,7 +496,6 @@ printHTMLToPDF();
       color:'grey'
     },
     dropdownContainer: {
-      // backgroundColor: '#76a901',
       width: windowWidth * 0.95,
       height: windowHeight * 0.2,
       alignSelf: 'center',
@@ -872,13 +529,11 @@ printHTMLToPDF();
       alignSelf: 'auto',
       elevation: 2,
       color:'blue',
-      // placeholderTextColor:'blue'
     },
     ddownItems: {
       width: windowWidth * 0.95,
       height: windowHeight * 0.05,
       borderBottomWidth: 0.2,
-      //  alignSelf: 'center',
       borderBottomColor: '#8e8e8e',
       justifyContent: 'center',
       color: 'grey',
@@ -904,7 +559,6 @@ printHTMLToPDF();
       flexDirection: 'column',
       alignItems: 'center',
       marginTop: 10,
-      // elevation: 10,
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -912,45 +566,16 @@ printHTMLToPDF();
       },
       shadowOpacity: 0.3,
       shadowRadius: 6.27,
-      // elevation: 10,
     },
     submitBtnContainer:{
       marginBottom:-10,
       marginLeft:windowWidth/1.5,
       width:windowWidth/3,
-      // zIndex:1,
-      // backgroundColor:'blue'
     },
     columnBtnContainer:{
       width:windowWidth*.15,
       height:windowHeight/1-windowHeight,
       marginLeft:10,
     },
-  
-    // productContainer: {
-    //   flexDirection: 'row',
-    //   alignItems: 'center',
-    //   justifyContent: 'space-between',
-    //   marginVertical: 10,
-    //   paddingHorizontal: 20,
-    // },
-    // productTitle: {
-    //   fontSize: 12,
-    //   fontWeight: 'bold',
-    //   marginRight: 10,
-    //   color:'#84889a'
-    // },
-    // quantityInput: {
-    //   flex: 1,
-    //   textAlign:'center',
-    //   borderWidth: 1,
-    //   borderColor: '#8E8EAD',
-    //   borderRadius: 5,
-    //   padding: 5,
-    //   marginBottom: 10,
-    //   color:'#89CFF0',
-    // height:windowHeight*0.04,
-    
-    // },
   });
     

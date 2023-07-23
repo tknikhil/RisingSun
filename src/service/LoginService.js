@@ -2,8 +2,8 @@
 import {BASE_URL,LOGIN_URL} from '../url/ConstantURL';
 
 const loginService = async (username,password) => {
-  // console.log(username,password);
-    // console.log(BASE_URL,LOGIN_URL);
+   console.log('LoginService',username,password);
+   console.log(BASE_URL,LOGIN_URL);
     try {
         const response = await fetch(`${BASE_URL()}${LOGIN_URL()}`, {
           method: 'POST',
@@ -21,15 +21,6 @@ const loginService = async (username,password) => {
       
         });
         console.log(response);
-      //  console.log(
-      //   JSON.stringify({
-      //     data:{
-      //       loginData:{
-      //         username:username,
-      //         password:password,}
-      //     }
-        
-      // }));
     
         const data = await response.json();
          console.log(data);

@@ -3,7 +3,7 @@ import React,{useRef, useState,} from 'react'
 import { FlatList,} from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient';
 import BottomBarNavigation from './BottomBarNavigation';
-const index = () => {
+const Index = () => {
     //#region menu
  const [showMenu, setShowMenu] = useState(false);
  const moveToRight = useRef(new Animated.Value(1)).current;
@@ -177,4 +177,4 @@ const [selectedMenuItem, setSelectedMenuItem] = useState(0);
   }
 }
 
-export default index
+export default Index

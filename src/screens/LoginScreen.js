@@ -21,57 +21,57 @@ const LoginScreen = ({navigation}) => {
   //     .then((data) => setUsers(data))
   //     .catch((error) => console.error(error));
   // }, []);
-  useEffect(() => {
-    // Load user data from JSON file
-    const userData = require('../../assets/json-request/login.json');
-    setUsers(userData);
-    // print(userData);
-    console.log(userData);
-  }, []);
+  // useEffect(() => {
+  //   // Load user data from JSON file
+  //   const userData = require('../../assets/json-request/login.json');
+  //   setUsers(userData);
+  //   // print(userData);
+  //   console.log(userData);
+  // }, []);
 
-  const handleLogin = () => {
-    // print("handleLogin");
-    console.log("handleLogin");
-    // Find the user by username and password
-    const user = login.find(
-      (u) => u.email === email && u.password === password
-    );
-    console.log(user);
-    if (user) {
-      // User found, navigate to the appropriate screen based on role
-      if (user.role === 'admin') {
-        // Display admin screen
-       navigation.navigate('Admin');
+  // const handleLogin = () => {
+  //   // print("handleLogin");
+  //   console.log("handleLogin");
+  //   // Find the user by username and password
+  //   const user = login.find(
+  //     (u) => u.email === email && u.password === password
+  //   );
+  //   console.log(user);
+  //   if (user) {
+  //     // User found, navigate to the appropriate screen based on role
+  //     if (user.role === 'admin') {
+  //       // Display admin screen
+  //      navigation.navigate('Admin');
         
-      } else if (user.role === 'sales') {
-        // Display sales screen
-        navigation.navigate('Index');
-      }
-    }
-    else {
-      setError('Invalid username or password');
-    }
-  };
+  //     } else if (user.role === 'sales') {
+  //       // Display sales screen
+  //       navigation.navigate('Index');
+  //     }
+  //   }
+  //   else {
+  //     setError('Invalid username or password');
+  //   }
+  // };
  
 // Company server
-  // const handleSubmit=async ()=>{
-  // //  console.log(email,password);
-  // // const response =await loginService(email, password);
-  // // console.log(response);
-  // try {
-  //   const response = await loginService(email, password);
-  //   if (response && response.privileges.groupNo === 1) {
-  //     await AsyncStorage.setItem('accessToken', response.token.accessToken);
-  //     navigation.navigate('Index');
-  //   } else {
-  //     await AsyncStorage.setItem('accessToken', response.token.accessToken);
-  //     navigation.navigate('AdminScreen');
-  //   }
-  // } catch (error) {
-  //   console.error('Login Error:', error);
-  //   Alert.alert('Login Error', 'An error occurred during login.');
-  // }
-  // }
+  const handleSubmit=async ()=>{
+   console.log(email,password);
+  // const response =await loginService(email, password);
+  // console.log('Login Screen',response);
+  try {
+    const response = await loginService(email, password);
+    if (response && response.privileges.groupNo === 1) {
+      await AsyncStorage.setItem('accessToken', response.token.accessToken);
+      navigation.navigate('Index');
+    } else {
+      await AsyncStorage.setItem('accessToken', response.token.accessToken);
+      navigation.navigate('AdminScreen');
+    }
+  } catch (error) {
+    console.error('Login Error:', error);
+    Alert.alert('Login Error', 'An error occurred during login.');
+  }
+  }
 
 
   return (
@@ -96,7 +96,7 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
       <View style={styles.btnContainer}>
-      <Button  onPress={handleLogin} text={'Login'}/>
+      <Button  onPress={handleSubmit} text={'Login'}/>
       </View>
     </View>
   );
